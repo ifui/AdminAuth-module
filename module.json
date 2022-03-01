@@ -1,0 +1,13 @@
+{
+    "name": "AdminAuth",
+    "alias": "adminauth",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AdminAuth\\Providers\\AdminAuthServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
