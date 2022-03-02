@@ -5,6 +5,8 @@ namespace Modules\AdminAuth\Tests\Unit\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Lang;
+use Modules\AdminAuth\Entities\AdminUser;
 
 class AuthTest extends TestCase
 {
@@ -16,7 +18,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function test_register()
     {
         $username = $this->faker->userName;
 
@@ -30,6 +32,33 @@ class AuthTest extends TestCase
 
         $response->assertJson([
             'success' => true,
+        ]);
+    }
+
+    /**
+     * 测试用户登录
+     *
+     * @return void
+     */
+    public function test_login()
+    {
+        // 创建测试账号
+        $username = 'ifui';
+        $password = '123456';
+
+        AdminUser::factory()->create([
+            'username' => $username,
+            'password' => $password
+        ]);
+
+        // 测试登录
+        $response = $this->postJson('/admin/login', [
+            'username' => $username,
+            'password' => $password
+        ]);
+
+        $response->assertJson([
+            'success' => true
         ]);
     }
 }

@@ -15,3 +15,4 @@ use Modules\AdminAuth\Http\Controllers\Admin\AuthController;
 */
 
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
