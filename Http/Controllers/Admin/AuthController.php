@@ -2,6 +2,8 @@
 
 namespace Modules\AdminAuth\Http\Controllers\Admin;
 
+use Illuminate\Auth\GenericUser;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -56,12 +58,39 @@ class AuthController extends Controller
 
         // 创建新令牌前，删除旧登录令牌
         $admin_user->tokens()->where('name', 'admin-login-token')->delete();
+
+        return $this->respondWithToken($admin_user);
+    }
+
+    /**
+     * 刷新登录令牌
+     *
+     * @param Request $request
+     * @return Illuminate\Http\Responsee
+     */
+    public function refresh(Request $request)
+    {
+        return $this->respondWithToken($request->user());
+    }
+
+    /**
+     * 生成 Token
+     *
+     * @param Modules\AdminAuth\Entities\AdminUser|Illuminate\Auth\GenericUser $admin_user
+     * @return Illuminate\Http\Responsee
+     */
+    public function respondWithToken(AdminUser|GenericUser $admin_user)
+    {
         $token = $admin_user->createToken('admin-login-token')->plainTextToken;
 
-        return success([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'expires_in' => config('sanctum.expiration'),
-        ]);
+        if (isset($token)) {
+            return success([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => config('sanctum.expiration'),
+            ]);
+        } else {
+            return error('adminauth::code.4002');
+        }
     }
 }

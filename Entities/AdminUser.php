@@ -3,12 +3,12 @@
 namespace Modules\AdminAuth\Entities;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
-class AdminUser extends Model
+class AdminUser extends Authenticatable
 {
     use HasFactory;
     use HasApiTokens; // sanctum

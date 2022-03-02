@@ -14,5 +14,10 @@ use Modules\AdminAuth\Http\Controllers\Admin\AuthController;
 |
 */
 
+// 用户注册
 Route::post('/register', [AuthController::class, 'register']);
+// 用户登录
 Route::post('/login', [AuthController::class, 'login']);
+
+// 刷新令牌
+Route::middleware('auth:sanctum')->get('/refresh', [AuthController::class, 'refresh']);
