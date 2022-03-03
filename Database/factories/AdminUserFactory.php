@@ -24,7 +24,7 @@ class AdminUserFactory extends Factory
         return [
             'uuid' => (string) Str::uuid(),
             'nickname' => $this->faker->unique()->name(4) . $this->faker->unique()->name(2),
-            'username' => $this->faker->word(4, 8) . $this->faker->word(2, 4),
+            'username' => (string) Str::uuid(),
             'email' => $this->faker->unique()->userName(4) . $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'phone' => $this->faker->unique()->phoneNumber,

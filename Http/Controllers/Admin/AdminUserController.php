@@ -5,7 +5,9 @@ namespace Modules\AdminAuth\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Modules\AdminAuth\Entities\AdminUser;
+use Modules\AdminAuth\Http\Requests\Admin\AdminUserRequest;
 use Modules\AdminAuth\QueryBuilder\Models\AdminUserQuery;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -30,12 +32,19 @@ class AdminUserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param AdminUserRequest $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(AdminUserRequest $request)
     {
-        //
+        $this->authorize('onlySuperAdmin');
+
+        $model = new AdminUser();
+        $model->fill($request->validated());
+        $model->uuid = (string) Str::uuid();
+        $admin_user = $model->save();
+
+        return resultStatus($admin_user);
     }
 
     /**
@@ -45,18 +54,31 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = QueryBuilder::for(AdminUser::class)
+            ->allowedIncludes(AdminUserQuery::include())
+            ->findOrFail($id);
+
+        $this->authorize('isOwner', $model);
+
+
+        return result($model);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param AdminUserRequest $request
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(AdminUserRequest $request, $id)
     {
-        //
+        $model = AdminUser::findOrFail($id);
+
+        $this->authorize('isOwner', $model);
+
+        $model->fill($request->validated());
+
+        return resultStatus($model->save());
     }
 
     /**
@@ -66,6 +88,10 @@ class AdminUserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('onlySuperAdmin');
+
+        $model = AdminUser::findOrFail($id);
+
+        return resultStatus($model->delete());
     }
 }
