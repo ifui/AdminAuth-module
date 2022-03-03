@@ -19,5 +19,8 @@
         "psr-4": {
             "Modules\\AdminAuth\\": ""
         }
+    },
+    "require": {
+        "spatie/laravel-permission": "^5.5"
     }
 }
