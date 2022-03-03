@@ -18,6 +18,7 @@ use Modules\AdminAuth\Http\Controllers\Admin\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 // 用户登录
 Route::post('/login', [AuthController::class, 'login']);
-
+// 用户登出
+Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
 // 刷新令牌
 Route::middleware('auth:sanctum')->get('/refresh', [AuthController::class, 'refresh']);

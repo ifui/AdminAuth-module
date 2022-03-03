@@ -2,12 +2,13 @@
 
 namespace Modules\AdminAuth\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 use Modules\AdminAuth\Entities\AdminUser;
 use Modules\AdminAuth\Http\Requests\Admin\LoginRequest;
 use Modules\AdminAuth\Http\Requests\Admin\RegisterRequest;
@@ -76,10 +77,10 @@ class AuthController extends Controller
     /**
      * 生成 Token
      *
-     * @param Modules\AdminAuth\Entities\AdminUser|Illuminate\Auth\GenericUser $admin_user
+     * @param Modules\AdminAuth\Entities\AdminUser $admin_user
      * @return Illuminate\Http\Responsee
      */
-    public function respondWithToken(AdminUser|GenericUser $admin_user)
+    public function respondWithToken(AdminUser $admin_user)
     {
         $token = $admin_user->createToken('admin-login-token')->plainTextToken;
 
@@ -92,5 +93,21 @@ class AuthController extends Controller
         } else {
             return error('adminauth::code.4002');
         }
+    }
+
+    /**
+     * 用户登出
+     *
+     * @param Request $request
+     * @return Illuminate\Http\Responsee
+     */
+    public function logout(Request $request)
+    {
+        // 撤销所有登录过的令牌
+        $request->user()->tokens()->where('name', 'admin-login-token')->delete();
+
+        auth('admin')->logout();
+
+        return success();
     }
 }
