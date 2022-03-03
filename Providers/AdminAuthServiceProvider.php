@@ -2,6 +2,7 @@
 
 namespace Modules\AdminAuth\Providers;
 
+use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -51,7 +52,14 @@ class AdminAuthServiceProvider extends ServiceProvider
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+            module_path($this->moduleName, 'Config/config.php'),
+            $this->moduleNameLower
+        );
+
+        // 注册 auth 配置文件
+        $this->mergeConfig(
+            module_path($this->moduleName, 'Config/auth.php'),
+            'auth'
         );
     }
 
@@ -108,5 +116,24 @@ class AdminAuthServiceProvider extends ServiceProvider
             }
         }
         return $paths;
+    }
+
+    /**
+     * 重写合并配置文件方法
+     *
+     * @param  string  $path
+     * @param  string  $key
+     * @return void
+     */
+    protected function mergeConfig($path, $key)
+    {
+        if (!($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {
+            $config = $this->app->make('config');
+
+            $config->set($key, array_merge_recursive(
+                require $path,
+                $config->get($key, [])
+            ));
+        }
     }
 }
