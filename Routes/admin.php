@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\AdminAuth\Http\Controllers\Admin\AdminUserController;
 use Modules\AdminAuth\Http\Controllers\Admin\AuthController;
 
 /*
@@ -22,3 +23,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
 // 刷新令牌
 Route::middleware('auth:sanctum')->get('/refresh', [AuthController::class, 'refresh']);
+
+// 管理员用户管理
+Route::middleware('auth:sanctum')->resource('/admin_users', AdminUserController::class);

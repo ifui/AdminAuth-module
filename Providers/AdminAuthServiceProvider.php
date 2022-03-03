@@ -4,7 +4,7 @@ namespace Modules\AdminAuth\Providers;
 
 use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Facades\Gate;
 
 class AdminAuthServiceProvider extends ServiceProvider
 {
@@ -29,6 +29,13 @@ class AdminAuthServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+
+        // 当角色为 super-admin 时，can() 方法返回 true
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('super-admin')) {
+                return true;
+            }
+        });
     }
 
     /**
