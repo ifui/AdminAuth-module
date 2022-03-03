@@ -110,4 +110,19 @@ class AuthController extends Controller
 
         return success();
     }
+
+    /**
+     * 返回当前登录用户信息
+     *
+     * @param Request $request
+     * @return Illuminate\Http\Responsee
+     */
+    public function userinfo(Request $request)
+    {
+        $user_id = $request->user()->id;
+
+        $admin_user = AdminUser::with(['roles', 'permissions'])->find($user_id);
+
+        return result($admin_user);
+    }
 }

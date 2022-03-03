@@ -36,7 +36,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * 测试用户登录、刷新令牌
+     * 测试用户登录、刷新令牌、登出
      *
      * @return void
      */
@@ -59,11 +59,15 @@ class AuthTest extends TestCase
         $response->assertJson([
             'success' => true
         ]);
-        $token = $response->json('data.access_token');
-        $type = $response->json('data.token_type');
 
         // 测试刷新令牌
         $response = $this->getJson('/admin/refresh');
+        $response->assertJson([
+            'success' => true
+        ]);
+
+        // 获取用户信息
+        $response = $this->getJson('/admin/userinfo');
         $response->assertJson([
             'success' => true
         ]);
