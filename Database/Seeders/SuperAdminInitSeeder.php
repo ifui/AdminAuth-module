@@ -5,6 +5,7 @@ namespace Modules\AdminAuth\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Modules\AdminAuth\Entities\AdminUser;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -20,7 +21,7 @@ class SuperAdminInitSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 创建超级管理员
+        // 创建超级管理员角色
         $role = Role::updateOrCreate(
             [
                 'guard_name' => 'admin',
@@ -29,9 +30,25 @@ class SuperAdminInitSeeder extends Seeder
             [
                 'guard_name' => 'admin',
                 'name' => 'super-admin',
-                'description' => '超级管理员'
+                'description' => '超级管理员角色'
             ]
         );
+
+        // 创建超级管理员角色
+        $permission = Permission::updateOrCreate(
+            [
+                'guard_name' => 'admin',
+                'name' => 'administrator',
+            ],
+            [
+                'guard_name' => 'admin',
+                'name' => 'administrator',
+                'description' => '拥有站点全部权限'
+            ]
+        );
+
+        // 给角色分配权限
+        $role->givePermissionTo($permission);
 
         $super_user = AdminUser::updateOrCreate(
             [
@@ -48,5 +65,6 @@ class SuperAdminInitSeeder extends Seeder
         );
 
         $super_user->syncRoles($role);
+        $super_user->syncPermissions($permission);
     }
 }

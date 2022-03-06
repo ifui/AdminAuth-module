@@ -4,11 +4,12 @@ namespace Modules\AdminAuth\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\AdminAuth\Entities\AdminUser;
 
-class AdminAuthDatabaseSeeder extends Seeder
+class TestAdminUserTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * 生成测试数据库模拟数据
      *
      * @return void
      */
@@ -16,9 +17,6 @@ class AdminAuthDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(SuperAdminInitSeeder::class);
-
-        // 生成测试数据
-        // $this->call(TestAdminUserTableSeeder::class);
+        AdminUser::factory()->count(35)->create();
     }
 }

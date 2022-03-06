@@ -44,7 +44,9 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $admin_user = AdminUser::where('username', $request->username)->first();
+        $admin_user = AdminUser::with(['roles', 'permissions'])
+            ->where('username', $request->username)
+            ->first();
 
         if (!Hash::check($request->password, $admin_user->password)) {
             throw ValidationException::withMessages([
@@ -71,7 +73,9 @@ class AuthController extends Controller
      */
     public function refresh(Request $request)
     {
-        return $this->respondWithToken($request->user());
+        $admin_user = AdminUser::with(['roles', 'permissions'])->find($request->user()->id);
+
+        return $this->respondWithToken($admin_user);
     }
 
     /**
@@ -89,6 +93,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'expires_in' => config('sanctum.expiration'),
+                'userinfo' => $admin_user
             ]);
         } else {
             return error('adminauth::code.4002');
