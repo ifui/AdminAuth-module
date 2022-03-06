@@ -3,7 +3,7 @@
 namespace Modules\AdminAuth\Http\Requests\Admin;
 
 use App\Http\Requests\MethodRequest;
-use Modules\AdminAuth\Rules\Phone;
+use App\Rules\Phone;
 
 class AdminUserRequest extends MethodRequest
 {

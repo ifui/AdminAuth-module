@@ -2,8 +2,8 @@
 
 namespace Modules\AdminAuth\Http\Requests\Admin;
 
+use App\Rules\Phone;
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\AdminAuth\Rules\Phone;
 
 class RegisterRequest extends FormRequest
 {
