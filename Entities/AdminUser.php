@@ -24,7 +24,6 @@ class AdminUser extends Authenticatable
         'phone',
         'avatar',
         'sex',
-        'status'
     ];
 
     protected $hidden = [
