@@ -12,6 +12,7 @@
     "@lang",
     "success",
     "error",
+    "CodeException",
 ]    
 ```
 
