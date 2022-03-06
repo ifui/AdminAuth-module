@@ -74,7 +74,7 @@ class AdminAuthServiceProvider extends ServiceProvider
         );
 
         // 注册 laravel-permission 配置文件
-        $this->mergeConfig(
+        $this->mergeConfigFrom(
             module_path($this->moduleName, 'Config/permission.php'),
             'permission'
         );
