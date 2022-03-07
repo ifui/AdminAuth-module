@@ -36,9 +36,10 @@ class AdminAuthServiceProvider extends ServiceProvider
             if ($user->hasRole('super-admin')) {
                 return true;
             }
-            if ($user->can('administrator')) {
+            if ($user->hasAnyPermission(['administrator'])) {
                 return true;
             }
+            return null;
         });
     }
 
