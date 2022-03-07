@@ -6,13 +6,13 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\AdminAuth\Entities\AdminUser;
-use Modules\AdminAuth\Tests\Traits\AuthTraits;
+use Modules\AdminAuth\Tests\Traits\AdminUserTraits;
 
 class AdminUserTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
-    use AuthTraits;
+    use AdminUserTraits;
 
     /**
      * 普通管理员访问管理员用户管理页面应当失败

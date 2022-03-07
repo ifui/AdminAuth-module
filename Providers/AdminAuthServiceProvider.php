@@ -29,18 +29,6 @@ class AdminAuthServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
-
-        // 当角色为 super-admin 时，can() 方法返回 true
-        // 当权限为 administrator 时，can() 方法返回 true
-        Gate::before(function ($user, $ability) {
-            if ($user->hasRole('super-admin')) {
-                return true;
-            }
-            if ($user->hasAnyPermission(['administrator'])) {
-                return true;
-            }
-            return null;
-        });
     }
 
     /**
@@ -72,12 +60,6 @@ class AdminAuthServiceProvider extends ServiceProvider
         $this->mergeConfig(
             module_path($this->moduleName, 'Config/auth.php'),
             'auth'
-        );
-
-        // 注册 laravel-permission 配置文件
-        $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/permission.php'),
-            'permission'
         );
     }
 
