@@ -20,11 +20,11 @@ Route::post('/register', [AuthController::class, 'register']);
 // 用户登录
 Route::post('/login', [AuthController::class, 'login']);
 // 用户登出
-Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:admin')->get('/logout', [AuthController::class, 'logout']);
 // 刷新令牌
-Route::middleware('auth:sanctum')->get('/refresh', [AuthController::class, 'refresh']);
+Route::middleware('auth:admin')->get('/refresh', [AuthController::class, 'refresh']);
 // 用户信息
-Route::middleware('auth:sanctum')->get('/userinfo', [AuthController::class, 'userinfo']);
+Route::middleware('auth:admin')->get('/userinfo', [AuthController::class, 'userinfo']);
 
 // 管理员用户管理
-Route::middleware('auth:sanctum')->resource('/admin_users', AdminUserController::class);
+Route::middleware('auth:admin')->resource('/admin_users', AdminUserController::class);

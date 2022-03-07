@@ -2,18 +2,16 @@
 
 namespace Modules\AdminAuth\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Auth\GenericUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Laravel\Sanctum\PersonalAccessToken;
 use Modules\AdminAuth\Entities\AdminUser;
+use Modules\AdminAuth\Http\Controllers\AdminAuthController;
 use Modules\AdminAuth\Http\Requests\Admin\LoginRequest;
 use Modules\AdminAuth\Http\Requests\Admin\RegisterRequest;
 
-class AuthController extends Controller
+class AuthController extends AdminAuthController
 {
     /**
      * 注册用户
@@ -29,11 +27,7 @@ class AuthController extends Controller
         $admin_user['password'] = $request->get('password');
         $admin_user->fill($request->validated());
 
-        if ($admin_user->save()) {
-            return success();
-        } else {
-            return error();
-        }
+        return resultStatus($admin_user->save());
     }
 
     /**
@@ -55,7 +49,7 @@ class AuthController extends Controller
         }
 
         // 认证用户实例
-        if (!auth('admin')->attempt($request->validated())) {
+        if (!$this->auth()->attempt($request->validated())) {
             return error('adminauth::code.4001');
         }
 
@@ -111,7 +105,7 @@ class AuthController extends Controller
         // 撤销所有登录过的令牌
         $request->user()->tokens()->where('name', 'admin-login-token')->delete();
 
-        auth('admin')->logout();
+        $this->auth()->logout();
 
         return success();
     }

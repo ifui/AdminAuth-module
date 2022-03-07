@@ -77,5 +77,11 @@ class AuthTest extends TestCase
         $response->assertJson([
             'success' => true
         ]);
+
+        // 测试刷新令牌，应当失败
+        $response = $this->getJson('/admin/refresh');
+        $response->assertJson([
+            'success' => false
+        ]);
     }
 }

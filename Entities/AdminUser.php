@@ -30,6 +30,8 @@ class AdminUser extends Authenticatable
         'password',
     ];
 
+    protected $guard_name = 'admin';
+
     /**
      * Factory
      *

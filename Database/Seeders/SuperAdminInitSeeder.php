@@ -34,7 +34,7 @@ class SuperAdminInitSeeder extends Seeder
             ]
         );
 
-        // 创建超级管理员角色
+        // 创建超级管理员权限
         $permission = Permission::updateOrCreate(
             [
                 'guard_name' => 'admin',
