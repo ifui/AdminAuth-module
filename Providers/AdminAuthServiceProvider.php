@@ -56,7 +56,7 @@ class AdminAuthServiceProvider extends ServiceProvider
             $this->moduleNameLower
         );
 
-        // 注册 auth 配置文件
+        // 合并 auth 配置文件
         $this->mergeConfig(
             module_path($this->moduleName, 'Config/auth.php'),
             'auth'
