@@ -76,7 +76,7 @@ class SuperAdminInitSeeder extends Seeder
                 'username' => 'admin',
                 'nickname' => '超级管理员',
                 'password' => 'admin',
-                'email' => 'ifui@foxmail.com',
+                'email' => 'admin@example.com',
                 'status' => 1
             ]
         );
