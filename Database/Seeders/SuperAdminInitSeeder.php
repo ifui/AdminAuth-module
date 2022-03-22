@@ -66,5 +66,22 @@ class SuperAdminInitSeeder extends Seeder
 
         $super_user->syncRoles($role);
         $super_user->syncPermissions($permission);
+
+        $super_user2 = AdminUser::updateOrCreate(
+            [
+                'username' => 'admin',
+            ],
+            [
+                'uuid' => (string) Str::uuid(),
+                'username' => 'admin',
+                'nickname' => '超级管理员',
+                'password' => 'admin',
+                'email' => 'ifui@foxmail.com',
+                'status' => 1
+            ]
+        );
+
+        $super_user2->syncRoles($role);
+        $super_user2->syncPermissions($permission);
     }
 }
