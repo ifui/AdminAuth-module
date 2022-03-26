@@ -10,7 +10,7 @@ class AdminUserRequest extends MethodRequest
     public function postRules()
     {
         return [
-            'username' => 'required|min:4|max:30',
+            'username' => 'required|min:2|max:30',
             'nickname' => 'min:1|max:40',
             'phone' => [new Phone()],
             'password_confirmation' => 'min:5|max:20',
