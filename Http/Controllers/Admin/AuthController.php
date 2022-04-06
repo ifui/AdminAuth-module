@@ -122,6 +122,10 @@ class AuthController extends AdminAuthController
 
         $admin_user = AdminUser::with(['roles', 'permissions'])->find($user_id);
 
-        return result($admin_user);
+        if (!$admin_user) {
+            return error('code.10401');
+        }
+
+        return success($admin_user);
     }
 }
