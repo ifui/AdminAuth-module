@@ -5,6 +5,7 @@ namespace Modules\AdminAuth\Providers;
 use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class AdminAuthServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,11 @@ class AdminAuthServiceProvider extends ServiceProvider
             module_path($this->moduleName, 'Config/auth.php'),
             'auth'
         );
+
+        // 设置 session cookie 键名，防止与前台站点发生冲突
+        config([
+            'session.cookie' => $this->moduleName . '_session'
+        ]);
     }
 
     /**
